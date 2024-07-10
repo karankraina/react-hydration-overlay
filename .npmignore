@@ -1,0 +1,10 @@
+.github
+test
+
+.eslintignore
+.eslintrc.json
+.prettierrc.json
+
+
+package-lock.json
+tsconfig
