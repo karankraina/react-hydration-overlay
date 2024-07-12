@@ -12,7 +12,11 @@ const querySelector = '$$overlayQuerySelector$$';
 if (isClient()) {
   if (!window.executed) {
     window.executed = true;
-    window.addEventListener('DOMContentLoaded', startObserver);
+    if (document.readyState === 'complete') {
+      startObserver()
+    } else {
+      window.addEventListener('DOMContentLoaded', startObserver);
+    }
     window.onerror = errorHandler;
   }
 }
