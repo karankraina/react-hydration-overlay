@@ -5,8 +5,12 @@ import { join } from 'path';
 const codeFilePath = join(__dirname, 'code.min.js');
 const code = readFileSync(codeFilePath, { encoding: 'utf-8' });
 
+type OverlayOptions = {
+  querySelector: string;
+};
+
 export class Overlay {
-  constructor() {}
+  constructor(private opts: OverlayOptions) {}
 
   apply(compiler: Compiler) {
     compiler.hooks.thisCompilation.tap(
@@ -18,11 +22,15 @@ export class Overlay {
             stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_INLINE,
           },
           (assets) => {
-            const snippet = code;
+            let snippet = code;
 
             for (const filename in assets) {
               if (filename.endsWith('.js')) {
                 const originalSource = assets[filename].source().toString();
+                snippet = snippet.replace(
+                  '$$overlayQuerySelector$$',
+                  this.opts.querySelector,
+                );
                 const updatedSource = `${snippet}\n${originalSource}`;
 
                 assets[filename] = new sources.RawSource(updatedSource);
