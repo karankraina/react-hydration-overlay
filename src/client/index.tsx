@@ -4,7 +4,7 @@ import { isClient } from './utils';
 
 import { Overlay } from './overlay';
 
-const HYDRATION_ERROR_MIN = /Minified React error #(418|422|423|419)/gi;
+const HYDRATION_ERROR_MIN = /Minified React error #(418|422|423|419|421)/gi;
 const HYDRATION_ERROR_DEV = /(Hydration|hydrating)/gi;
 
 const querySelector = '$$overlayQuerySelector$$';
@@ -13,7 +13,7 @@ if (isClient()) {
   if (!window.executed) {
     window.executed = true;
     if (document.readyState === 'complete') {
-      startObserver()
+      startObserver();
     } else {
       window.addEventListener('DOMContentLoaded', startObserver);
     }
